@@ -7,6 +7,7 @@ const pages = document.querySelectorAll('[data-page]');
 const navigationBar = document.querySelector('.navbar');
 const navigationToggle = document.querySelector('[data-nav-toggle]');
 const themeToggle = document.querySelector('[data-theme-toggle]');
+const returnToTop = document.querySelector('[data-return-top]');
 
 function readSavedTheme() {
   try {
@@ -32,6 +33,8 @@ sidebarButton?.addEventListener('click', function () {
   const isOpen = sidebar.classList.toggle('active');
   sidebarButton.setAttribute('aria-expanded', String(isOpen));
   sidebarButton.setAttribute('aria-label', isOpen ? 'Hide contacts' : 'Show contacts');
+  const label = sidebarButton.querySelector('span');
+  if (label) label.textContent = isOpen ? 'Hide Contacts' : 'Show Contacts';
 });
 
 navigationToggle?.addEventListener('click', function () {
@@ -85,6 +88,17 @@ document.querySelectorAll('[data-nav-target]').forEach(function (target) {
     showPage(selectedPage);
   });
 });
+
+returnToTop?.addEventListener('click', function () {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+function updateReturnToTop() {
+  returnToTop?.classList.toggle('is-visible', window.scrollY > 360);
+}
+
+window.addEventListener('scroll', updateReturnToTop, { passive: true });
+updateReturnToTop();
 
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape' && sidebar?.classList.contains('active')) {
